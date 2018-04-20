@@ -48,7 +48,10 @@ router.post('/login', async (req, res) => {
       // check user gave correct password
       else {
         if (user.password === DatabaseHelper.hashPass(password)) {
-          res.status(200).json({message: 'logged in'})
+          // user provided correct credentials now provide user token
+          let token = await DatabaseHelper.createToken(user.id)
+          if (token instanceof ApiError) throw token
+          else res.status(200).json({token: token.tokenString})
           // wrong pass
         } else { throw new ApiError(400, 'Invalid username or password', 'InvalidCredentialsError') }
       }
