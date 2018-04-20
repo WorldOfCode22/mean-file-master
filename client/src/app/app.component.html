@@ -17,11 +17,17 @@
         <li class="nav-item">
           <a (click)="changePage('userLogin')" class="nav-link">Login</a>
         </li>
+        <li class="nav-item">
+          <a (click)="changePage('userProfile')" class="nav-link">Profile</a>
+        </li>
       </ul>
     </div>
   </nav>
   <div *ngIf="currentPage === 'userLogin'">
     <app-user-login (loginEvent)="onUserLogin($event)"></app-user-login>
+  </div>
+  <div *ngIf="currentPage === 'userProfile'">
+    <app-user-profile></app-user-profile>
   </div>
 </div>
 

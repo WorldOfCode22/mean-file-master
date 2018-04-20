@@ -1,0 +1,9 @@
+<div *ngIf="gettingUser" class="row">
+  <h3 class="text-center">Please wait while we fetch your profile</h3>
+</div>
+<div *ngIf="gotUserData">
+  <h1>Got user profile</h1>
+</div>
+<div *ngIf="errorGettingUser">
+  <h1>Could not fetch profile</h1>
+</div>

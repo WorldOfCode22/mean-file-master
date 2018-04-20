@@ -81,6 +81,7 @@ router.post('/login', async (req, res) => {
 
 router.get('/:username/:token', async (req, res) => {
   try {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:4200')
     let username = req.params.username
     let token = req.params.token
     let user = await DatabaseHelper.checkTokenAndGetUser(username, token)
@@ -88,6 +89,7 @@ router.get('/:username/:token', async (req, res) => {
     else if (user) res.status(200).json({user})
     else throw new ApiError(403, 'Invalid username or token', 'InvalidCredentialsError')
   } catch (e) {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:4200')
     if (e instanceof ApiError) {
       res.status(e.statusCode).json({error: e.message})
     } else {

@@ -5,5 +5,6 @@
 
 export const environment = {
   production: false,
-  usersLogin: 'http://localhost:3000/users/login'
+  usersLogin: 'http://localhost:3000/users/login',
+  getUser: 'http://localhost:3000/users/'
 };

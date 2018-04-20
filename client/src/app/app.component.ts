@@ -14,7 +14,7 @@ export class AppComponent {
   title : string = 'File Master';
   information : string = 'A place to store and share files'
   currentPage : string = 'home'
-  pages : string[] = ['home', 'userLogin']
+  pages : string[] = ['home', 'userLogin', 'userProfile']
   user: User
 
   changePage(page : string){
@@ -39,6 +39,7 @@ export class AppComponent {
       (data) => { 
         if (data.token) {
           localStorage.setItem('token', data.token)
+          localStorage.setItem('username', this.user.username)
           this.changePage('home')
         }
       }
