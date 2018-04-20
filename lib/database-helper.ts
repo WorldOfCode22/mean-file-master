@@ -20,8 +20,8 @@ class DatabaseHelper {
     return str
   }
 
-  static getUserByUsername(username: string) : Promise<IUserModel | ApiError | null> {
-    return User.findOne({username})
+  static getUserByUsername(username: string, projection?: object) : Promise<IUserModel | ApiError | null> {
+    return User.findOne({username}, projection)
     .then(
       (user: IUserModel | null) => { return user}
     )
@@ -60,15 +60,28 @@ class DatabaseHelper {
     )
   }
 
-  static getToken(username: string, token: string) : Promise<ITokenModel | ApiError | null>{
-    return Token.findOne({username, token})
-    .then(
-      (doc) => {return doc}
-    )
-
-    .catch(
-      (err) => { return new ApiError(500, 'Could not get token collection', 'TokenCollectionError') }
-    )
+  static async checkTokenAndGetUser(username: string, token: string) : Promise<IUserModel | ApiError | null>{
+    try {
+      // check for valid username and fetch user
+      let user = await DatabaseHelper.getUserByUsername(username, {password: 0})
+      if (user instanceof ApiError) return user
+      else if (user) {
+        // check valid token
+        return Token.findOne({tokenString: token, userId: user.id})
+        .then(
+          (token) => {
+            if (token) return user
+            else return null
+          }
+        )
+        .catch(
+          (err) => {return new ApiError(500, 'Could not fetch tokens collection', 'TokenCollectionError')}
+        ) 
+      }
+      else return new ApiError(403, 'Invalid username', 'InvalidCredentialsError')
+    } catch (e) {
+      return e
+    }
   }
 }
   
