@@ -1,9 +1,10 @@
-import express from 'express'
+import {Router} from 'express'
 import ApiError from '../lib/errors/api-error'
 import DatabaseHelper from '../lib/database-helper'
 import { IUserModel } from '../models/user';
+import {devEnv} from '../config/env'
 
-const router = express.Router()
+const router = Router()
 
 router.post('/register', async (req, res) => {
   try {
@@ -35,10 +36,15 @@ router.post('/register', async (req, res) => {
 })
 
 router.post('/login', async (req, res) => {
+  if (devEnv) {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:4200')
+  }
   try {
   // required fields
+  console.log(req.body)
   let username = req.body.username
   let password = req.body.password
+  console.log(username, password)
   // check required fields
   if (username && password) {
     // get user
@@ -67,6 +73,7 @@ router.post('/login', async (req, res) => {
     if (e instanceof ApiError) {
       res.status(e.statusCode).json({error: e.message})
     } else {
+      console.log(e)
       res.status(500).json({error: 'An internal error occurred'})
     }
   }

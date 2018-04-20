@@ -1,7 +1,7 @@
 import {User, IUserModel} from '../models/user'
 import {Token, ITokenModel} from '../models/token'
 import ApiError from '../lib/errors/api-error'
-import crypto from 'crypto'
+import crypto = require('crypto')
 import {devEnv} from '../config/env'
 
 class DatabaseHelper {

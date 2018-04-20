@@ -1,13 +1,13 @@
-import express from 'express'
-import mongoose from 'mongoose'
-import bodyParser from 'body-parser'
-import cookieSession from 'cookie-session'
-import passport from 'passport'
+import express = require('express');
+import mongoose = require('mongoose')
+import bodyParser = require('body-parser')
+import cookieSession = require('cookie-session')
+import passport = require('passport')
 import {devEnv} from './config/env'
 import userRouter from './routes/users'
 
 class Server {
-  app = express()
+  app  = express()
   constructor(){
     this.config()
     this.routes()
