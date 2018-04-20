@@ -9,7 +9,7 @@ class ApiError extends Error {
   }
 
   checkName(){
-    let nameArray: string[] = ['UserCollectionError', 'UsernameTaken', 'MissingRequiredFields', 'SaveUserError', 'InvalidCredentialsError']
+    let nameArray: string[] = ['UserCollectionError', 'UsernameTaken', 'MissingRequiredFields', 'SaveUserError', 'InvalidCredentialsError', 'TokenSaveError', 'TokenCollectionError']
     if (nameArray.indexOf(this.name) === -1) throw new Error('Error name must match a name in the name array')
   }
 }
