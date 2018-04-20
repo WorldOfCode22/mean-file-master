@@ -1,7 +1,7 @@
 import {Router} from 'express'
 import ApiError from '../lib/errors/api-error'
 import DatabaseHelper from '../lib/database-helper'
-import { IUserModel } from '../models/user';
+import { IUserModel, User } from '../models/user';
 import {devEnv} from '../config/env'
 
 const router = Router()
@@ -69,6 +69,24 @@ router.post('/login', async (req, res) => {
   } else {
     throw new ApiError(400, 'Username and password are required', 'MissingRequiredFields')
   }
+  } catch (e) {
+    if (e instanceof ApiError) {
+      res.status(e.statusCode).json({error: e.message})
+    } else {
+      console.log(e)
+      res.status(500).json({error: 'An internal error occurred'})
+    }
+  }
+})
+
+router.get('/:username/:token', async (req, res) => {
+  try {
+    let username = req.params.username
+    let token = req.params.token
+    let user = await DatabaseHelper.checkTokenAndGetUser(username, token)
+    if (user instanceof ApiError) throw user
+    else if (user) res.status(200).json({user})
+    else throw new ApiError(403, 'Invalid username or token', 'InvalidCredentialsError')
   } catch (e) {
     if (e instanceof ApiError) {
       res.status(e.statusCode).json({error: e.message})
