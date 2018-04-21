@@ -3,6 +3,7 @@ import {Token, ITokenModel} from '../models/token'
 import ApiError from '../lib/errors/api-error'
 import crypto = require('crypto')
 import {devEnv} from '../config/env'
+import { DataStore, IDataStoreModel } from '../models/data-store';
 
 class DatabaseHelper {
 
@@ -82,6 +83,23 @@ class DatabaseHelper {
     } catch (e) {
       return e
     }
+  }
+
+  static async createDataStore(username: string, token: string) : Promise< IDataStoreModel | ApiError>{
+    try {
+    let user = await DatabaseHelper.checkTokenAndGetUser(username, token)
+    if (user instanceof ApiError) return user
+    else if(user) {
+      let newDateStore = new DataStore({
+        userId: user.id,
+        lastUpdated: Date.now()
+      })
+      return newDateStore.save()
+    }
+    else return new ApiError(403, 'Invalid field(s) given', 'InvalidCredentialsError')
+  } catch (e) {
+    return e
+  }
   }
 }
   
