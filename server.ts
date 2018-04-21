@@ -5,6 +5,7 @@ import cookieSession = require('cookie-session')
 import passport = require('passport')
 import {devEnv} from './config/env'
 import userRouter from './routes/users'
+import dataStoreRouter from './routes/data-store'
 
 class Server {
   app  = express()
@@ -33,6 +34,7 @@ class Server {
 
   routes(){
     this.app.use('/users', userRouter)
+    this.app.use('/dataStores', dataStoreRouter)
   }
 }
 
