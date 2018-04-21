@@ -2,7 +2,13 @@
   <h3 class="text-center">Please wait while we fetch your profile</h3>
 </div>
 <div *ngIf="gotUserData">
-  <h1>Got user profile</h1>
+  <div *ngIf="user.dataStores.length > 0">
+    <h1>You have dataStores</h1>
+  </div>
+  <div *ngIf='user.dataStores.length == 0'>
+    <h1 class="text-center">You have no dataStores</h1>
+    <button (click)="createDataStore()" class="btn btn-primary">Create Data Store</button>
+  </div>
 </div>
 <div *ngIf="errorGettingUser">
   <h1>Could not fetch profile</h1>
